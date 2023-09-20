@@ -1,8 +1,11 @@
+
+import { BallTriangle } from  'react-loader-spinner'
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 const Axios = () => {
     const [data,setData]=useState([]);
+    const [loading,setLoading]=useState(true);
     useEffect(()=>{
         axios.get("https://openapi.programming-hero.com/api/phones?search=iphone")
         .then(data=> {
@@ -14,12 +17,40 @@ const Axios = () => {
                 }
                 return obj;
             })
-            setData(phonesWithFakeData)
+            setData(phonesWithFakeData);
+            setLoading(false);
         })
     },[])
     return (
         <div>
+                {
+                    loading && <div className='w-full text-center flex justify-center my-10'>
+                        <BallTriangle
+                    height={100}
+                    width={100}
+                    radius={5}
+                    color="#4fa94d"
+                    ariaLabel="ball-triangle-loading"
+                    wrapperClass={{}}
+                    wrapperStyle=""
+                    visible={true}
+                  />
+                    </div>
+                }
                 <h1 className="text-4xl text-center my-6 font-bold">Data Length : {data.length}</h1> 
+                <div className='flex justify-center my-5'>
+       <BallTriangle
+                    height={100}
+                    width={100}
+                    radius={5}
+                    color="#4fa94d"
+                    ariaLabel="ball-triangle-loading"
+                    wrapperClass={{}}
+                    wrapperStyle=""
+                    visible={true}
+                  />  
+                  </div>
+                <div className='flex justify-center'>
                 <BarChart width={1300} height={400} data={data}>
           <Bar dataKey="price" fill="#8884d8" />
           <XAxis dataKey="name"></XAxis>
@@ -29,7 +60,8 @@ const Axios = () => {
           <CartesianGrid></CartesianGrid>
           <Legend></Legend>
           <ResponsiveContainer></ResponsiveContainer>
-        </BarChart>          
+        </BarChart></div> 
+              
         </div>
     );
 };
